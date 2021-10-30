@@ -1,0 +1,14 @@
+{
+    "server": {
+        "protocol": "http",
+        "fqdn": "localhost",
+        "port": "3012"
+    },
+    "db": {
+        "host": "52.210.223.58",
+        "user": "DBA",
+        "password": "0v*j4<KhMSQ<i^X!",
+        "database": "DashboardTemplate_DB",
+        "debugMode": true
+    }
+}
