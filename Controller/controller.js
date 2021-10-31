@@ -16,7 +16,7 @@ exports.getUsers = (req, callback) => {
 
 
     db.raw('SELECT  * FROM  sys.users').then(function (resp) {
-        console.log("**************************", resp[0])
+        // console.log("**************************", resp[0])
 
 
         var result = {}
@@ -31,7 +31,7 @@ exports.getUsers = (req, callback) => {
 exports.getUserinfoById = (req, callback) => {
 
     db.raw("SELECT  * FROM  sys.users WHERE id = '" + req.body.id + "'").then(function (resp) {
-        console.log("**************************", resp[0][0])
+        // console.log("**************************", resp[0][0])
 
         callback(null, resp[0][0])
     });
@@ -42,11 +42,35 @@ exports.getUserinfoById = (req, callback) => {
 // Function  for  insertUser
 exports.insertUser = (req, callback) => {
 
-    db.raw("INSERT INTO sys.users (name, email, salary, `role`) VALUES('" + req.body.name + "', '" + req.body.email + "', '" + req.body.salary + "', '" + req.body.role + "');").then(function (resp) {
+
+
+
+
+
+    db.raw("SELECT id FROM sys.users where email = '" + req.body.email + "' AND name = '" + req.body.name + "';").then(function (resp) {
+
+        console.log("---------------------------------------", resp[0])
+        if (resp[0][0] == null) {
+            db.raw("INSERT INTO sys.users (name, email, salary, `role`) VALUES('" + req.body.name + "', '" + req.body.email + "', '" + req.body.salary + "', '" + req.body.role + "');").then(function (resp) {
+
+
+                callback(null, resp[0])
+            });
+
+        }else{
+            db.raw("UPDATE sys.users SET name='" + req.body.name + "', email='" + req.body.email + "', salary='" + req.body.salary + "', `role`='" + req.body.role + "' WHERE id='" + resp[0][0]['id'] + "';").then(function (resp) {
+
+
+                callback(null, resp[0])
+            });
         
 
-        callback(null, resp[0])
+        }
+        // console.log("---------------------------------------", resp[0][0]['id'])
+        // callback(null, resp[0])
     });
+
+
 
 }
 

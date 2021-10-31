@@ -1,0 +1,297 @@
+<html>
+
+<body>
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    /* Button used to open the contact form - fixed at the bottom of the page */
+    .open-button {
+      background-color: #555;
+      color: white;
+      padding: 16px 20px;
+      border: none;
+      cursor: pointer;
+      opacity: 0.8;
+      position: fixed;
+      bottom: 23px;
+      right: 28px;
+      width: 280px;
+    }
+
+    /* The popup form - hidden by default */
+    .form-popup {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      right: 15px;
+      border: 3px solid #f1f1f1;
+      z-index: 9;
+    }
+
+    /* Add styles to the form container */
+    .form-container {
+      max-width: 300px;
+      padding: 10px;
+      background-color: white;
+    }
+
+    /* Full-width input fields */
+    .form-container input[type=text],
+    .form-container input[type=password] {
+      width: 100%;
+      padding: 15px;
+      margin: 5px 0 22px 0;
+      border: none;
+      background: #f1f1f1;
+    }
+
+    /* When the inputs get focus, do something */
+    .form-container input[type=text]:focus,
+    .form-container input[type=password]:focus {
+      background-color: #ddd;
+      outline: none;
+    }
+
+    /* Set a style for the submit/login button */
+    .form-container .btn {
+      background-color: #04AA6D;
+      color: white;
+      padding: 16px 20px;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      margin-bottom: 10px;
+      opacity: 0.8;
+    }
+
+    /* Add a red background color to the cancel button */
+    .form-container .cancel {
+      background-color: red;
+    }
+
+    /* Add some hover effects to buttons */
+    .form-container .btn:hover,
+    .open-button:hover {
+      opacity: 1;
+    }
+  </style>
+  </head>
+
+  <body>
+
+
+    <button class="open-button" onclick="insertEmployee()">insert Employee</button>
+
+    <div class="form-popup" id="myForm">
+      <form id="insertEmployee" class="form-container">
+
+        <h1>insertEmployee</h1>
+
+        <label for="EmployeeName"><b>Employee Name</b></label>
+        <input type="text" id="empname" placeholder="Enter Name" name="Employee Name" required>
+
+
+        <label for="Email"><b>Email</b></label>
+        <input type="text" id="email" placeholder="Enter Email ID" name="Email" required>
+
+        <label for="Salary"><b>Salary</b></label>
+        <input type="text" id="salary" placeholder="Enter Salary" name="Salary" required>
+
+        <label for="Role"><b>Role</b></label>
+        <input type="text" id="role" placeholder="Enter Role" name="Role" required>
+
+        <button type="submit" id="submit" class="btn">INSERT</button>
+        <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
+      </form>
+    </div>
+
+
+
+    <!-- data table files view  -->
+
+
+
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/dataTables.jqueryui.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/scroller/2.0.5/css/scroller.jqueryui.min.css">
+
+
+    <table id="employee" class="display nowrap" style="width:100%">
+
+
+      <thead>
+        <tr>
+          <th>ID</t<h>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Salary</th>
+          <th>Role</th>
+          <th>Update</th>
+        </tr>
+    </table>
+    </thead>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.3/js/dataTables.jqueryui.min.js"></script>
+    <script src="https://cdn.datatables.net/scroller/2.0.5/js/dataTables.scroller.min.js"></script>
+
+    <script>
+
+
+      $(document).on("click", ".update", function () {
+        // let atbDate = moment($(this).attr("atbdate"), "YYYY-MM-DD").format("MM-DD-YYYY")
+        let empname = $(this).attr("empname")
+        let email = $(this).attr("email")
+        let salary = $(this).attr("salary")
+        let role = $(this).attr("role")
+        // $("#description").val(atbDesc)
+        // $("#ATB_DATE").prop("disabled", true);
+        // $("#client").prop("disabled", true);
+        // $("#ATB_DATE").data('daterangepicker').setStartDate(atbDate);
+        // $("#ATB_DATE").data('daterangepicker').setEndDate(atbDate);
+        $("#empname").val(empname)
+        $("#email").val(email)
+        $("#salary").val(salary)
+        $("#role").val(role)
+        // $("#addRowButton").html("Update");
+        // $("#atbFormTitle").html("Update Existing ATB")
+        insertEmployee()
+        // $('#addModal').modal('show');
+        // $("#operation").val("2")
+      })
+
+
+
+
+      function insertEmployee() {
+        document.getElementById("myForm").style.display = "block";
+      }
+
+      function closeForm() {
+        document.getElementById("myForm").style.display = "none";
+      }
+
+      $(document).ready(function () {
+        $("#signup").click(function () {
+          $("#form1").toggle('slow');
+        });
+      });
+      $(document).ready(function () {
+
+        var settings = {
+          "url": "http://localhost:3012/getUsers?page=1&limit=100",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            query: "",
+            variables: {}
+          })
+        };
+
+        $.ajax(settings).done(function (response) {
+
+          console.log(response["data"]);
+
+          $('#employee').dataTable({
+            data: response["data"],
+
+
+            "columns": [
+              { data: 'id' },
+              { data: 'name' },
+              { data: 'email' },
+              { data: 'salary' },
+              { data: 'role' },
+              {
+                className: "text-center",
+
+
+                mRender: function (data, type, row) {
+                  return '<button type="button" data-toggle="modal" title="Update " data-target="#edit" empname=' + row.name + ' email="' + row.email + '" salary="' + row.salary + '" role="' + row.role + '" class="update btn btn-primary btn-sm"><span class="glyphicon glyphicon-pencil"></span></button>'
+                }
+              },
+            ],
+
+            // "fnCreatedRow": function (row, data, dataIndex) {
+            //   console.log("data  is here =    >>>>>>>>>> ", data)
+            //   $(row).attr('id', data.id);
+            //   $(row).attr('client', data.client);
+            //   $(row).attr('actualDate', data.actualdate);
+
+            // },
+            // 'columnDefs': [
+            //   {
+            //     'targets': 9,
+            //     'createdCell': function (td, cellData, rowData, row, col) {
+            //       $(td).attr('name', 'status');
+            //     }
+            //   }
+            // ]
+
+          });
+
+
+
+
+        });
+
+
+      });
+
+
+
+      /************save employee *************/
+
+
+
+      $("#submit").click(function () {
+
+      
+        let name = $("#empname").val();
+        let email = $("#email").val();
+        let salary = $("#salary").val();
+        let role = $("#role").val();
+
+        var settings = {
+          "url": "http://localhost:3012/insertUser",
+          "method": "POST",
+          "timeout": 0,
+          "headers": {
+            "Content-Type": "application/json"
+          },
+          "data": JSON.stringify({
+            "name": name,
+            "email": email,
+            "salary": salary,
+            "role": role
+          }),
+        };
+
+        $.ajax(settings).done(function (response) {
+          console.log(response);
+        });
+
+
+      })
+
+    </script>
+
+  </body>
+
+
+
+</html>

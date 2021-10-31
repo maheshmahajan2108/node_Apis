@@ -9,7 +9,7 @@ module.exports = (app) => {
     app.post('/getUsers', function (req, res, next) {
 
         controller.getUsers(req, (err, resp) => {
-            console.log("*************************",resp)
+            // console.log("*************************",resp)
 
             if (err) {
 
@@ -107,6 +107,10 @@ module.exports = (app) => {
 
     });
 
+    app.get('/adminsetting',  function (req, res, next) {
 
+        
+        res.render('main.html', { backendURL: "localhost", userName: "mahesh", title: "File Import Utility" });
+    });
     
 }
